@@ -1,6 +1,6 @@
 {
   "version": "1",
-  "name": "COC",
+  "name": "docs.bruno",
   "type": "collection",
   "ignore": [
     "node_modules",
