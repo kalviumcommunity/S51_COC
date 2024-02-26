@@ -1,0 +1,22 @@
+meta {
+  name: Post
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:3000/api/post
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "captionID": 12,
+    "userAvatar": "https://cdn.pixabay.com/photo/2021/01/04/10/41/icon-5887126_1280.png",
+    "userID": 11,
+    "userName": "Eloise",
+    "caption": "Own it",
+    "tags": "Life"
+  }
+}
