@@ -1,15 +1,14 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const CaptionSchema = new mongoose.Schema({
-    CaptionID: { type: Number },
-    UserAvatar: { type: String },
-    UserID: { type: Number },
-    UserName : {type : String},
-    Captions : {type : String},
-    Tags : {type : String }
-},
-);
+const captionSchema = new mongoose.Schema({
+  CaptionID: String,
+  UserAvatar: String,
+  UserID: String,
+  UserName: String,
+  Caption: String,
+  Tags: String
+});
 
+const Caption = mongoose.model('cocs', captionSchema);
 
-
-module.exports = mongoose.model("cocs", CaptionSchema);
+module.exports = Caption;
