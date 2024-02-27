@@ -1,8 +1,83 @@
-{
-    "captionID":1,
-    "userAvatar":"https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes-thumbnail.png",
-    "userID":1,
-    "userName":"Starlette",
-    "caption":"Actually, I can",
-    "tags":"Creative"
-}
+[
+    {
+      "captionID": 1,
+      "userAvatar": "https://cdn.iconscout.com/icon/free/png-256/free-avatar-370-456322.png?f=webp",
+      "userID": 1,
+      "userName": "Starlette",
+      "caption": "Stay hungry",
+      "tags": "Motivation"
+    },
+    {
+      "captionID": 2,
+      "userAvatar": "https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes-thumbnail.png",
+      "userID": 1,
+      "userName": "Starlette",
+      "caption": "Actually, I can",
+      "tags": "Creative"
+    },
+    {
+      "captionID": 3,
+      "userAvatar": "https://yt3.googleusercontent.com/-CFTJHU7fEWb7BYEb6Jh9gm1EpetvVGQqtof0Rbh-VQRIznYYKJxCaqv_9HeBcmJmIsp2vOO9JU=s900-c-k-c0x00ffffff-no-rj",
+      "userID": 4,
+      "userName": "Snowdrop",
+      "caption": "Less perfection, more authenticity",
+      "tags": "Life"
+    },
+    {
+      "captionID": 4,
+      "userAvatar": "https://png.pngtree.com/png-vector/20191101/ourmid/pngtree-cartoon-color-simple-male-avatar-png-image_1934459.jpg",
+      "userID": 4,
+      "userName": "Snowdrop",
+      "caption": "Life is too short not to smile",
+      "tags": "Creative"
+    },
+    {
+      "captionID": 5,
+      "userAvatar": "https://play-lh.googleusercontent.com/7Ak4Ye7wNUtheIvSKnVgGL_OIZWjGPZNV6TP_3XLxHC-sDHLSE45aDg41dFNmL5COA=w240-h480-rw",
+      "userID": 5,
+      "userName": "Kahlani",
+      "caption": "Livin’ my best life",
+      "tags": "Creative"
+    },
+    {
+      "captionID": 6,
+      "userAvatar": "https://img.freepik.com/premium-vector/avatar-icon002_750950-52.jpg",
+      "userID": 6,
+      "userName": "Elodie",
+      "caption": "Find your fire",
+      "tags": "Life"
+    },
+    {
+      "captionID": 7,
+      "userAvatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2OoDN5rR3EKkdxsKm2urLEk_XfXw25xc6gw&usqp=CAU",
+      "userID": 3,
+      "userName": "Lara",
+      "caption": "All-natural",
+      "tags": "Photography"
+    },
+    {
+      "captionID": 8,
+      "userAvatar": "https://static.vecteezy.com/system/resources/previews/002/002/297/non_2x/beautiful-woman-avatar-character-icon-free-vector.jpg",
+      "userID": 2,
+      "userName": "Luxury",
+      "caption": "There is beauty in simplicity",
+      "tags": "Photography"
+    },
+    {
+      "captionID": 9,
+      "userAvatar": "https://st3.depositphotos.com/3431221/13621/v/450/depositphotos_136216036-stock-illustration-man-avatar-icon-hipster-character.jpg",
+      "userID": 4,
+      "userName": "Snowdrop",
+      "caption": "Know your worth",
+      "tags": "Creative"
+    },
+    {
+      "captionID": 10,
+      "userAvatar": "https://cdn.pixabay.com/photo/2021/01/04/10/41/icon-5887126_1280.png",
+      "userID": 8,
+      "userName": "Eloise",
+      "caption": "Own it",
+      "tags": "Life"
+    }
+  ]
+  
