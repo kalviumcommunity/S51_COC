@@ -7,50 +7,53 @@ const Captions = require("../models/captions.model");
 
 getRouter.get("/get", async (req, res) => {
   try {
-    const captions = await Captions.find(); // Fetch all captions from the database
-    res.status(200).json(captions); // Respond with the captions in JSON format
+    const captions = await Captions.find();
+    res.status(200).json(captions);
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Internal Server Error");
   }
 });
 
-// Route to create a new caption
-postRouter.post("/post", async (req, res) => {
+getRouter.get('/get/:CaptionID', async (req, res) => {
+  try {
+    const { CaptionID } = req.params;
+    const caption = await Captions.findOne({ CaptionID: CaptionID });
+    res.status(200).json(caption);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+postRouter.post('/post', async (req, res) => {
   try {
     const { CaptionID, UserAvatar, UserID, UserName, Caption, Tags } = req.body;
-
-    // Create a new caption object
-    const caption = new Captions({
+    const newCaption = await Captions.create({
       CaptionID,
       UserAvatar,
       UserID,
       UserName,
       Caption,
-      Tags,
+      Tags
     });
-    await caption.save();
-    console.log(req.body)
-    res.status(201).json({ message: "Caption added successfully", caption });
-  } catch (error) {
-    console.error(error.message);
+    res.status(201).json(newCaption);
+  } catch (err) {
+    console.error(err);
     res.status(500).send("Internal Server Error");
   }
 });
 
-// Route to update an existing caption
 patchRouter.patch("/patch/:captionId", async (req, res) => {
   try {
-    const { captionId } = req.params; // Extract captionId from request parameters
-    const updates = req.body; // Extract updates from request body
+    const { captionId } = req.params;
+    const updates = req.body;
 
-    // Find and update the caption by captionId
     const caption = await Captions.findOneAndUpdate(
       { CaptionID: captionId },
       { $set: updates },
       { new: true }
     );
-
     if (!caption) {
       return res.status(404).json({ message: "Caption not found" });
     }
@@ -62,12 +65,9 @@ patchRouter.patch("/patch/:captionId", async (req, res) => {
   }
 });
 
-// Route to delete a caption by captionId
 deleteRouter.delete("/delete/:captionId", async (req, res) => {
   try {
-    const { captionId } = req.params; // Extract captionId from request parameters
-
-    // Find and delete the caption by captionId
+    const { captionId } = req.params;
     const caption = await Captions.findOneAndDelete({ CaptionID: captionId });
 
     if (!caption) {

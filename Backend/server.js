@@ -1,6 +1,6 @@
 const { startDatabase, stopDatabase, isConnected } = require('./config/db');
 const { getRouter, deleteRouter, postRouter, patchRouter } = require('./routes/routes');
-const bodyParser = require('body-parser');
+const bodyParser = require('body-parser')
 const express = require('express');
 const app = express();
 const port = 3000;
