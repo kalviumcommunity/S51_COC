@@ -1,0 +1,56 @@
+body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.heading{
+    text-align: center;
+}
+.container{
+    width: 600px;
+    height: 150px;
+    border: 1px solid black;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.user{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.user img{
+    width: 10%;
+    border-radius: 50px;
+}
+
+.user-details{
+    display: flex;
+    flex-direction: column;
+}
+
+.tag{
+    width: 100px;
+    height: 30px;
+    background-color: orangered;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 30px;
+    color: white;
+    justify-content: center;
+    align-items: center;
+}
+
+.top{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px;
+}
