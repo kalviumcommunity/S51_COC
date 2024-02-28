@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 
 const captionSchema = new mongoose.Schema({
-  CaptionID: String,
-  UserAvatar: String,
-  UserID: String,
-  UserName: String,
-  Caption: String,
-  Tags: String
+  captionID: Number,
+  userAvatar: String,
+  userID: Number,
+  userName: String,
+  caption: String,
+  tags: String
 });
 
 const Caption = mongoose.model('cocs', captionSchema);

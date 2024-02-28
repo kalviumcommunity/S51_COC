@@ -1,11 +1,11 @@
 const { startDatabase, stopDatabase, isConnected } = require('./config/db');
 const { getRouter, deleteRouter, postRouter, patchRouter } = require('./routes/routes');
-const bodyParser = require('body-parser')
 const express = require('express');
 const app = express();
-const port = 3000;
+const dotenv = require('dotenv');
+dotenv.config();
+const port = process.env.PORT;
 
-app.use(bodyParser.json());
 app.use("/api", getRouter);
 app.use("/api", postRouter);
 app.use("/api", patchRouter);
