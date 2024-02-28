@@ -1,6 +1,7 @@
 const express = require("express");
 const getRouter = express.Router();
 const postRouter = express.Router();
+postRouter.use(express.json());
 const patchRouter = express.Router();
 const deleteRouter = express.Router();
 const Captions = require("../models/captions.model");
@@ -18,7 +19,7 @@ getRouter.get("/get", async (req, res) => {
 getRouter.get('/get/:CaptionID', async (req, res) => {
   try {
     const { CaptionID } = req.params;
-    const caption = await Captions.findOne({ CaptionID: CaptionID });
+    const caption = await Captions.findOne({ captionID: CaptionID });
     res.status(200).json(caption);
   } catch (err) {
     console.log(err);
@@ -28,19 +29,24 @@ getRouter.get('/get/:CaptionID', async (req, res) => {
 
 postRouter.post('/post', async (req, res) => {
   try {
-    const { CaptionID, UserAvatar, UserID, UserName, Caption, Tags } = req.body;
+    const { captionID, userAvatar, userID, userName, caption, tags } = req.body;
     const newCaption = await Captions.create({
-      CaptionID,
-      UserAvatar,
-      UserID,
-      UserName,
-      Caption,
-      Tags
+      captionID,
+      userAvatar,
+      userID,
+      userName,
+      caption,
+      tags
     });
     res.status(201).json(newCaption);
   } catch (err) {
-    console.error(err);
-    res.status(500).send("Internal Server Error");
+    if (err.name === 'ValidationError') {
+      console.error('Validation Error:', err.errors);
+      res.status(400).json({ error: 'Validation Error', details: err.errors });
+    } else {
+      console.error('Error creating caption:', err);
+      res.status(500).send("Internal Server Error");
+    }
   }
 });
 
@@ -50,7 +56,7 @@ patchRouter.patch("/patch/:captionId", async (req, res) => {
     const updates = req.body;
 
     const caption = await Captions.findOneAndUpdate(
-      { CaptionID: captionId },
+      { captionID: captionId },
       { $set: updates },
       { new: true }
     );
@@ -68,7 +74,7 @@ patchRouter.patch("/patch/:captionId", async (req, res) => {
 deleteRouter.delete("/delete/:captionId", async (req, res) => {
   try {
     const { captionId } = req.params;
-    const caption = await Captions.findOneAndDelete({ CaptionID: captionId });
+    const caption = await Captions.findOneAndDelete({ captionID: captionId });
 
     if (!caption) {
       return res.status(404).json({ message: "Caption not found" });
