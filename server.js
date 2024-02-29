@@ -1,7 +1,7 @@
 const { startDatabase, stopDatabase, isConnected } = require('./config/db');
 const { getRouter, deleteRouter, postRouter, patchRouter } = require('./routes/routes');
 const express = require('express');
-const cors = require('cors');
+const cors = require('cors')
 const app = express();
 const dotenv = require('dotenv');
 dotenv.config();
@@ -10,7 +10,7 @@ app.use("/api", getRouter);
 app.use("/api", postRouter);
 app.use("/api", patchRouter);
 app.use("/api", deleteRouter);
-app.use(cors());
+app.use(cors())
 
 app.get('/', (req, res) => {
   res.json({

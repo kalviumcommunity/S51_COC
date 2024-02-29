@@ -5,8 +5,11 @@ postRouter.use(express.json());
 const patchRouter = express.Router();
 const deleteRouter = express.Router();
 const Captions = require("../models/captions.model");
+const cors = require('cors')
+app.use(cors());
 
 getRouter.get("/get", async (req, res) => {
+  res.header({'Access-Control-Allow-Origin': '*'});
   try {
     const captions = await Captions.find();
     res.status(200).json(captions);
@@ -17,6 +20,7 @@ getRouter.get("/get", async (req, res) => {
 });
 
 getRouter.get('/get/:CaptionID', async (req, res) => {
+  res.header({'Access-Control-Allow-Origin': '*'});
   try {
     const { CaptionID } = req.params;
     const caption = await Captions.findOne({ captionID: CaptionID });
@@ -28,6 +32,7 @@ getRouter.get('/get/:CaptionID', async (req, res) => {
 });
 
 postRouter.post('/post', async (req, res) => {
+  res.header({'Access-Control-Allow-Origin': '*'});
   try {
     const { captionID, userAvatar, userID, userName, caption, tags } = req.body;
     const newCaption = await Captions.create({
@@ -51,6 +56,7 @@ postRouter.post('/post', async (req, res) => {
 });
 
 patchRouter.patch("/patch/:captionId", async (req, res) => {
+  res.header({'Access-Control-Allow-Origin': '*'});
   try {
     const { captionId } = req.params;
     const updates = req.body;
@@ -72,6 +78,7 @@ patchRouter.patch("/patch/:captionId", async (req, res) => {
 });
 
 deleteRouter.delete("/delete/:captionId", async (req, res) => {
+  res.header({'Access-Control-Allow-Origin': '*'});
   try {
     const { captionId } = req.params;
     const caption = await Captions.findOneAndDelete({ captionID: captionId });
