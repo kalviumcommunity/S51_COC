@@ -10,7 +10,11 @@ function DummyData() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("https://coc-y497.onrender.com/api/get");
+      const response = await fetch("https://coc-y497.onrender.com/api/get", {
+        headers: {
+          'Access-Control-Allow-Origin': '*'
+        }
+      });
       if (!response.ok) {
         throw new Error("Failed to fetch data");
       }
