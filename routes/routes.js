@@ -5,8 +5,6 @@ postRouter.use(express.json());
 const patchRouter = express.Router();
 const deleteRouter = express.Router();
 const Captions = require("../models/captions.model");
-const cors = require('cors')
-app.use(cors());
 
 getRouter.get("/get", async (req, res) => {
   res.header({'Access-Control-Allow-Origin': '*'});
