@@ -31,9 +31,6 @@ getRouter.get('/get/:CaptionID', async (req, res) => {
 
 postRouter.post('/post', async (req, res) => {
   res.header({'Access-Control-Allow-Origin': '*'});
-
-  res.setHeader({'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE'});
-  res.header({'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'});
   try {
     const { captionID, userAvatar, userID, userName, caption, tags } = req.body;
     const newCaption = await Captions.create({
