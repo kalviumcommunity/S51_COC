@@ -30,7 +30,8 @@ getRouter.get('/get/:CaptionID', async (req, res) => {
 });
 
 postRouter.post('/post', async (req, res) => {
-  // res.header({'Access-Control-Allow-Origin': '*'});
+  res.header({'Access-Control-Allow-Origin': '*'});
+  res.header({'Access-Control-Allow-Methods': 'GET,POST,PATCH'});
   try {
     const { captionID, userAvatar, userID, userName, caption, tags } = req.body;
     const newCaption = await Captions.create({
