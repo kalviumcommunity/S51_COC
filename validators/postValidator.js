@@ -9,8 +9,8 @@ const postUpdateSchema = Joi.object({
     tags: Joi.string().required(),
 });
 
-const updateAndPostValidator = (data) => {
+const postValidator = (data) => {
     return postUpdateSchema.validate(data, { abortEarly: false });
 };
 
-module.exports = updateAndPostValidator;
+module.exports = postValidator;

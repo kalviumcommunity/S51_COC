@@ -6,6 +6,15 @@ meta {
 
 patch {
   url: http://localhost:3000/api/patch/12
-  body: none
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "userAvatar": "https://hndf",
+    "userName": "uuu",
+    "caption": "Hey U",
+    "tags": "Life"
+  }
 }
