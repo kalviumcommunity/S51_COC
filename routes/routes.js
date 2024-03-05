@@ -81,12 +81,6 @@ patchRouter.patch("/patch/:captionId", async (req, res) => {
 
     const validationResult = updateAndPostValidator(updates);
 
-    if (validationResult.error) {
-      const errors = validationResult.error.details.map(detail => detail.message);
-      console.error('Validation Error:', errors);
-      return res.status(400).json({ error: 'Validation Error', details: errors });
-    }
-
     const caption = await Captions.findOneAndUpdate(
       { captionID: captionId },
       { $set: updates },
