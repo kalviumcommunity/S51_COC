@@ -4,8 +4,37 @@ import React, { useEffect, useState } from "react";
 import Copy from "../assets/copy.png"
 import Edit from "../assets/edit.png"
 import Delete from "../assets/delete.png"
+import Update from "./Update";
 
 function Captions() {
+
+  const [showFormPopup, setShowFormPopup] = useState(false);
+  const [captionId, setCaptionId] = useState(null);
+
+  const handleDelete = async (captionId) => {
+    try {
+      const response = await axios.delete(`https://coc-y497.onrender.com/api/delete/${captionId}`);
+      if (response.status === 200) {
+        fetchData();
+        console.log("Caption deleted successfully");
+      } else {
+        console.error("Failed to delete caption");
+      }
+    } catch (error) {
+      console.error("Error deleting caption:", error);
+    }
+  };
+  
+
+  const toggleFormPopup = (captionId) => {
+    setCaptionId(captionId);
+    setShowFormPopup(!showFormPopup);
+  };
+
+  const closePopup = () => {
+    setShowFormPopup(false);
+  };
+
   const [captions, setCaptions] = useState([]);
 
   useEffect(() => {
@@ -52,11 +81,11 @@ function Captions() {
                 </div>
               </div>
               <div className="buttons-list-area">
-                <div className="edit-btn-area">
+                <div className="edit-btn-area" onClick={() => toggleFormPopup(caption.captionID)}>
                   <img src={ Edit } alt="" />
                   <p>Edit</p>
                 </div>
-                <div className="delete-btn-area">
+                <div className="delete-btn-area" onClick={() => handleDelete(caption.captionID)}>
                   <img src={ Delete } alt="" />
                   <p>Delete</p>
                 </div>
@@ -65,6 +94,11 @@ function Captions() {
           ))}
         </div>
       </div>
+      {showFormPopup && (
+          <div className="form-popup">
+            <Update captionId={captionId} close={closePopup}/>
+          </div>
+        )}
     </>
   );
 }
