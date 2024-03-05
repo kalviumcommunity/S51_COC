@@ -6,6 +6,7 @@ postRouter.use(express.json());
 const patchRouter = express.Router();
 const deleteRouter = express.Router();
 const Captions = require("../models/captions.model");
+const updateAndPostValidator = require("../validators/updateAndPostValidator");
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -41,6 +42,22 @@ postRouter.post('/post', async (req, res) => {
   res.header({'Access-Control-Allow-Origin': '*'});
   try {
     const { captionID, userAvatar, userID, userName, caption, tags } = req.body;
+
+    const validationResult = updateAndPostValidator({
+      captionID,
+      userAvatar,
+      userID,
+      userName,
+      caption,
+      tags
+    });
+
+    if (validationResult.error) {
+      const errors = validationResult.error.details.map(detail => detail.message);
+      console.error('Validation Error:', errors);
+      return res.status(400).json({ error: 'Validation Error', details: errors });
+    }
+
     const newCaption = await Captions.create({
       captionID,
       userAvatar,
@@ -51,13 +68,8 @@ postRouter.post('/post', async (req, res) => {
     });
     res.status(201).json(newCaption);
   } catch (err) {
-    if (err.name === 'ValidationError') {
-      console.error('Validation Error:', err.errors);
-      res.status(400).json({ error: 'Validation Error', details: err.errors });
-    } else {
-      console.error('Error creating caption:', err);
-      res.status(500).send("Internal Server Error");
-    }
+    console.error('Error creating caption:', err);
+    res.status(500).send("Internal Server Error");
   }
 });
 
@@ -66,6 +78,20 @@ patchRouter.patch("/patch/:captionId", async (req, res) => {
   try {
     const { captionId } = req.params;
     const updates = req.body;
+
+    const validationResult = updateAndPostValidator(updates);
+
+    if (validationResult.error) {
+      const errors = validationResult.error.details.map(detail => detail.message);
+      console.error('Validation Error:', errors);
+      return res.status(400).json({ error: 'Validation Error', details: errors });
+    }
+
+    if (validationResult.error) {
+      const errors = validationResult.error.details.map(detail => detail.message);
+      console.error('Validation Error:', errors);
+      return res.status(400).json({ error: 'Validation Error', details: errors });
+    }
 
     const caption = await Captions.findOneAndUpdate(
       { captionID: captionId },
@@ -82,6 +108,7 @@ patchRouter.patch("/patch/:captionId", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
 
 deleteRouter.delete("/delete/:captionId", async (req, res) => {
   res.header({'Access-Control-Allow-Origin': '*'});
