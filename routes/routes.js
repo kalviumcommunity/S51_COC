@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express()
 const getRouter = express.Router();
-const app = express();
 const postRouter = express.Router();
 postRouter.use(express.json());
 const patchRouter = express.Router();
