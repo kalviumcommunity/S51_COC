@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -9,12 +10,20 @@ function Data(props) {
   };
 
   const [captionID] = useState(generateRandomNumber());
-  const [userID] = useState(generateRandomNumber());
+  const [userID, setUserID] = useState("");
   const [userAvatar, setUserAvatar] = useState("");
   const [userName, setUserName] = useState("");
   const [caption, setCaption] = useState("");
   const [tags, setTags] = useState("");
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    const storedUserID = Cookies.get("userId");
+    const storedUserName = Cookies.get("username");
+
+    setUserID(storedUserID);
+    setUserName(storedUserName);
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -23,9 +32,6 @@ function Data(props) {
 
     if (!userAvatar) {
       validationErrors.userAvatar = "User Avatar URL is required";
-    }
-    if (!userName) {
-      validationErrors.userName = "Username is required";
     }
     if (!caption) {
       validationErrors.caption = "Caption is required";
@@ -110,7 +116,7 @@ function Data(props) {
             name="userName"
             type="text"
             value={userName}
-            onChange={handleChange}
+            disabled
           />
           {errors.userName && <div className="error">{errors.userName}</div>}
         </div>
