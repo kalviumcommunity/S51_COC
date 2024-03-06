@@ -61,7 +61,6 @@ function Data(props) {
 
       if (response.status === 201) {
         setUserAvatar("");
-        setUserName("");
         setCaption("");
         setTags("");
         toast.success("Data submitted successfully!");
@@ -77,7 +76,6 @@ function Data(props) {
   const handleChange = (event) => {
     const { name, value } = event.target;
     if (name === "userAvatar") setUserAvatar(value);
-    else if (name === "userName") setUserName(value);
     else if (name === "caption") setCaption(value);
     else if (name === "tags") setTags(value);
   };
