@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Cookies from "js-cookie";
 
 function Update({ captionId, close }) {
   const [userAvatar, setUserAvatar] = useState("");
@@ -9,6 +10,7 @@ function Update({ captionId, close }) {
   const [caption, setCaption] = useState("");
   const [tags, setTags] = useState("");
   const [errors, setErrors] = useState({});
+  const [captionData, setCaptionData] = useState({});
 
   useEffect(() => {
     const fetchCaptionDetails = async () => {
@@ -16,18 +18,27 @@ function Update({ captionId, close }) {
         const response = await axios.get(
           `https://coc-y497.onrender.com/api/get/${captionId}`
         );
-        const captionData = response.data;
+        const fetchedCaptionData = response.data;
 
-        setUserAvatar(captionData.userAvatar);
-        setUserName(captionData.userName);
-        setCaption(captionData.caption);
-        setTags(captionData.tags);
+        setCaptionData(fetchedCaptionData);
+        setUserAvatar(fetchedCaptionData.userAvatar);
+        setUserName(fetchedCaptionData.userName);
+        setCaption(fetchedCaptionData.caption);
+        setTags(fetchedCaptionData.tags);
+
+        const storedUserId = Cookies.get("userId");
+        if (storedUserId != fetchedCaptionData.userID) {
+          toast.error("You are not authorized to edit this caption");
+        }
       } catch (error) {
         console.error("Error fetching caption details:", error);
       }
     };
 
     fetchCaptionDetails();
+
+    const storedUserName = Cookies.get("username");
+    setUserName(storedUserName);
   }, [captionId]);
 
   const handleSubmit = async (e) => {
@@ -37,9 +48,6 @@ function Update({ captionId, close }) {
 
     if (!userAvatar) {
       validationErrors.userAvatar = "User Avatar URL is required";
-    }
-    if (!userName) {
-      validationErrors.userName = "Username is required";
     }
     if (!caption) {
       validationErrors.caption = "Caption is required";
@@ -84,7 +92,6 @@ function Update({ captionId, close }) {
   const handleChange = (event) => {
     const { name, value } = event.target;
     if (name === "userAvatar") setUserAvatar(value);
-    else if (name === "userName") setUserName(value);
     else if (name === "caption") setCaption(value);
     else if (name === "tags") setTags(value);
   };
@@ -115,7 +122,7 @@ function Update({ captionId, close }) {
             name="userName"
             type="text"
             value={userName}
-            onChange={handleChange}
+            disabled={Cookies.get("userId") !== captionData.userID}
           />
           {errors.userName && <div className="error">{errors.userName}</div>}
         </div>

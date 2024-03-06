@@ -1,30 +1,38 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
-import Copy from "../assets/copy.png"
-import Edit from "../assets/edit.png"
-import Delete from "../assets/delete.png"
+import Copy from "../assets/copy.png";
+import Edit from "../assets/edit.png";
+import Delete from "../assets/delete.png";
 import Update from "./Update";
+import { ToastContainer, toast } from "react-toastify";
 
 function Captions() {
-
   const [showFormPopup, setShowFormPopup] = useState(false);
   const [captionId, setCaptionId] = useState(null);
 
-  const handleDelete = async (captionId) => {
+  const handleDelete = async (captionId, userId) => {
     try {
-      const response = await axios.delete(`https://coc-y497.onrender.com/api/delete/${captionId}`);
-      if (response.status === 200) {
-        fetchData();
-        console.log("Caption deleted successfully");
+      const storedUserId = Cookies.get("userId");
+      if (storedUserId == userId) {
+        const response = await axios.delete(
+          `https://coc-y497.onrender.com/api/delete/${captionId}`
+        );
+        if (response.status === 200) {
+          toast.success("Caption deleted successfully");
+          fetchData();
+        } else {
+          toast.error("Failed to delete caption");
+        }
       } else {
-        console.error("Failed to delete caption");
+        toast.warning("You are not authorized to delete this caption");
       }
     } catch (error) {
       console.error("Error deleting caption:", error);
+      toast.error("Failed to delete caption");
     }
   };
-  
 
   const toggleFormPopup = (captionId) => {
     setCaptionId(captionId);
@@ -52,6 +60,7 @@ function Captions() {
 
   return (
     <>
+      <ToastContainer />
       <h1 className="captions-area-heading">Captions</h1>
       <div className="captions-list-area">
         <div className="single-caption-area">
@@ -76,17 +85,25 @@ function Captions() {
                   <h4>"{caption.caption}"</h4>
                 </div>
                 <div className="copy-me-icon">
-                  <img src={ Copy } alt="copy-icon" />
+                  <img src={Copy} alt="copy-icon" />
                   <p>Copy</p>
                 </div>
               </div>
               <div className="buttons-list-area">
-                <div className="edit-btn-area" onClick={() => toggleFormPopup(caption.captionID)}>
-                  <img src={ Edit } alt="" />
+                <div
+                  className="edit-btn-area"
+                  onClick={() => toggleFormPopup(caption.captionID)}
+                >
+                  <img src={Edit} alt="" />
                   <p>Edit</p>
                 </div>
-                <div className="delete-btn-area" onClick={() => handleDelete(caption.captionID)}>
-                  <img src={ Delete } alt="" />
+                <div
+                  className="delete-btn-area"
+                  onClick={() =>
+                    handleDelete(caption.captionID, caption.userID)
+                  }
+                >
+                  <img src={Delete} alt="" />
                   <p>Delete</p>
                 </div>
               </div>
@@ -95,10 +112,10 @@ function Captions() {
         </div>
       </div>
       {showFormPopup && (
-          <div className="form-popup">
-            <Update captionId={captionId} close={closePopup}/>
-          </div>
-        )}
+        <div className="form-popup">
+          <Update captionId={captionId} close={closePopup} />
+        </div>
+      )}
     </>
   );
 }
