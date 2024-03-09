@@ -1,16 +1,16 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Cookies from "js-cookie";
 
-function Update({ captionId, close }) {
+function Update({ captionId, close, isAuthenticated }) {
   const [userAvatar, setUserAvatar] = useState("");
   const [userName, setUserName] = useState("");
   const [caption, setCaption] = useState("");
   const [tags, setTags] = useState("");
   const [errors, setErrors] = useState({});
   const [captionData, setCaptionData] = useState({});
+  const [isButtonDisabled, setIsButtonDisabled] = useState(!isAuthenticated);
 
   useEffect(() => {
     const fetchCaptionDetails = async () => {
@@ -25,20 +25,12 @@ function Update({ captionId, close }) {
         setUserName(fetchedCaptionData.userName);
         setCaption(fetchedCaptionData.caption);
         setTags(fetchedCaptionData.tags);
-
-        const storedUserId = Cookies.get("userId");
-        if (storedUserId != fetchedCaptionData.userID) {
-          toast.error("You are not authorized to edit this caption");
-        }
       } catch (error) {
         console.error("Error fetching caption details:", error);
       }
     };
 
     fetchCaptionDetails();
-
-    const storedUserName = Cookies.get("username");
-    setUserName(storedUserName);
   }, [captionId]);
 
   const handleSubmit = async (e) => {
@@ -80,6 +72,7 @@ function Update({ captionId, close }) {
 
       if (response.status === 200) {
         toast.success("Caption updated successfully");
+        close();
       } else {
         toast.error("Failed to update caption");
       }
@@ -95,6 +88,13 @@ function Update({ captionId, close }) {
     else if (name === "caption") setCaption(value);
     else if (name === "tags") setTags(value);
   };
+
+  useEffect(() => {
+    setIsButtonDisabled(!isAuthenticated);
+    if (!isAuthenticated) {
+      toast.warning("You are not authorized to edit without logging in");
+    }
+  }, [isAuthenticated]);
 
   return (
     <>
@@ -122,7 +122,7 @@ function Update({ captionId, close }) {
             name="userName"
             type="text"
             value={userName}
-            disabled={Cookies.get("userId") !== captionData.userID}
+            disabled
           />
           {errors.userName && <div className="error">{errors.userName}</div>}
         </div>
@@ -152,7 +152,7 @@ function Update({ captionId, close }) {
         </div>
         <div className="submit-btns">
           <div className="submit-btn">
-            <button type="submit">Submit</button>
+            <button type="submit" disabled={isButtonDisabled}>Submit</button>
           </div>
           <div className="close-btn">
             <button onClick={close}>Close</button>

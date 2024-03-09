@@ -213,13 +213,12 @@ nav{
     width: 50vw;
     height: 70vh;
     border: 2px solid black;
-    text-align: center;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 50px;
+    gap: 20px;
 }
 
 .right-bar{
@@ -235,6 +234,7 @@ nav{
 
 .left-bar p{
     margin-top: 20px;
+    text-align: center;
 }
 
 .add-yours-caption-btn{
@@ -566,7 +566,6 @@ form{
     width: 25vw;
     height: 5vh;
     border-radius: 5px;
-    cursor: no-drop;
 }
 
 .username-area{

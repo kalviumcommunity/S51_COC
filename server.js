@@ -1,5 +1,5 @@
 const { startDatabase, stopDatabase, isConnected } = require('./config/db');
-const { getRouter, deleteRouter, postRouter, patchRouter } = require('./routes/routes');
+const { getRouter, deleteRouter, postRouter, patchRouter, loginRouter, router } = require('./routes/routes');
 const express = require('express');
 const cors = require('cors')
 const app = express();
@@ -18,6 +18,8 @@ app.use("/api", getRouter);
 app.use("/api", postRouter);
 app.use("/api", patchRouter);
 app.use("/api", deleteRouter);
+app.use("/api", loginRouter);
+app.use("/api", router)
 app.use(cors())
 
 app.get('/', (req, res) => {
@@ -30,6 +32,7 @@ app.get('/', (req, res) => {
 app.get('/ping', (req, res) => {
   res.send('Pong');
 });
+
 
 app.listen(port, async () => {
   await startDatabase();
