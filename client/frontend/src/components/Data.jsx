@@ -18,12 +18,18 @@ function Data(props) {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    const storedUserID = Cookies.get("userId");
-    const storedUserName = Cookies.get("username");
-
-    setUserID(storedUserID);
-    setUserName(storedUserName);
+    const token = Cookies.get("token");
+    if (token) {
+      const userInfo = parseToken(token);
+      setUserName(userInfo.username);
+      setUserID(userInfo.userID);
+    }
   }, []);
+
+  const parseToken = (token) => {
+    const decodedToken = atob(token.split(".")[1]);
+    return JSON.parse(decodedToken);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
