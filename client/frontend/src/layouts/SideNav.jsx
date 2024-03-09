@@ -28,6 +28,14 @@ function SideNav() {
         return <Home />;
     }
   };
+  
+  const handleSource = () => {
+    window.open('https://github.com/kalviumcommunity/S51_COC');
+  }
+  
+  const handleContribute = () => {
+    window.open('https://github.com/kalviumcommunity/S51_COC/issues')
+  }
 
   return (
     <>
@@ -48,11 +56,11 @@ function SideNav() {
             </div>
           </div>
           <div className="nav-footer">
-            <div className="github">
+            <div className="github" onClick={handleSource}>
               <img src={Github} alt="github-logo" />
               <button>View Source Code</button>
             </div>
-            <div className="contribute">
+            <div className="contribute" onClick={handleContribute}>
               <img src={Contribute} alt="github-logo" />
               <button>Contribute</button>
             </div>
