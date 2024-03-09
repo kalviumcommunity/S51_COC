@@ -12,12 +12,25 @@ function Captions() {
   const [showFormPopup, setShowFormPopup] = useState(false);
   const [captionId, setCaptionId] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [filteredCaptions, setFilteredCaptions] = useState([]);
+  const [captions, setCaptions] = useState([]);
+  const [selectedTag, setSelectedTag] = useState("");
 
   useEffect(() => {
     const token = Cookies.get("token");
     setIsAuthenticated(!!token);
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (selectedTag === "") {
+      setFilteredCaptions(captions);
+    } else {
+      const filtered = captions.filter((caption) => caption.tags === selectedTag);
+      setFilteredCaptions(filtered);
+    }
+  }, [selectedTag, captions]);
+
 
   const handleDelete = async (captionId) => {
     try {
@@ -49,8 +62,6 @@ function Captions() {
     setShowFormPopup(false);
   };
 
-  const [captions, setCaptions] = useState([]);
-
   const fetchData = async () => {
     try {
       const response = await axios.get("https://coc-y497.onrender.com/api/get");
@@ -60,13 +71,27 @@ function Captions() {
     }
   };
 
+  const handleTagFilter = (tag) => {
+    setSelectedTag(tag);
+  };
+
   return (
     <>
       <ToastContainer />
       <h1 className="captions-area-heading">Captions</h1>
+      <div className="tag-filter">
+        <select onChange={(e) => handleTagFilter(e.target.value)}>
+          <option value="">All Tags</option>
+          <option value="Life">Life</option>
+          <option value="Love">Love</option>
+          <option value="Motivation">Motivation</option>
+          <option value="Photography">Photography</option>
+          <option value="Friends">Friends</option>
+        </select>
+      </div>
       <div className="captions-list-area">
         <div className="single-caption-area">
-          {captions.map((caption, index) => (
+          {filteredCaptions.map((caption, index) => (
             <div className="caption-items-list" key={index}>
               <div className="top-area">
                 <div className="user-area-list">
