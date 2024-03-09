@@ -1,45 +1,39 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import Data from "./Data";
 import AuthForm from "./AuthForm";
 
 function Home() {
   const [showFormPopup, setShowFormPopup] = useState(false);
-  const [showAuthFormPopup, setShowAuthFormPopup] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState("");
   const [userId, setUserId] = useState("");
 
   useEffect(() => {
-    const storedUsername = Cookies.get("username");
-    const storedUserId = Cookies.get("userId");
-
-    if (storedUsername && storedUserId) {
-      setUsername(storedUsername);
-      setUserId(storedUserId);
+    const token = Cookies.get("token");
+    if (token) {
+      const userInfo = parseToken(token);
+      setUsername(userInfo.username);
+      setUserId(userInfo.userID);
       setIsAuthenticated(true);
     }
   }, []);
 
-  const toggleFormPopup = () => {
-    setShowFormPopup(!showFormPopup);
+  const parseToken = (token) => {
+    const decodedToken = atob(token.split(".")[1]);
+    return JSON.parse(decodedToken);
   };
 
-  const toggleAuthFormPopup = () => {
-    setShowAuthFormPopup(!showAuthFormPopup);
+  const toggleFormPopup = () => {
+    setShowFormPopup(!showFormPopup);
   };
 
   const closePopup = () => {
     setShowFormPopup(false);
   };
 
-  const closeAuthPopup = () => {
-    setShowAuthFormPopup(false);
-  };
-
   const handleLogout = () => {
-    Cookies.remove("username");
-    Cookies.remove("userId");
+    Cookies.remove("token");
     setUsername("");
     setUserId("");
     setIsAuthenticated(false);
@@ -61,17 +55,16 @@ function Home() {
           <div className="add-yours-caption-btn">
             <button onClick={toggleFormPopup}>Add your Caption</button>
           </div>
-          {isAuthenticated ? (
+          {!isAuthenticated && (
+            <AuthForm setIsAuthenticated={setIsAuthenticated} />
+          )}
+          {isAuthenticated && (
             <div className="user-info">
-              <h5>Welcome, {username} (Public User ID: {userId})</h5>
+              <h5>
+                Welcome, {username} (Public User ID: {userId})
+              </h5>
               <div className="logout-button-area">
                 <button onClick={handleLogout}>Logout</button>
-              </div>
-            </div>
-          ) : (
-            <div className="home-buttons-area">
-              <div className="login-button-area">
-                <button onClick={toggleAuthFormPopup}>Login/Sign Up</button>
               </div>
             </div>
           )}
@@ -83,12 +76,6 @@ function Home() {
       {showFormPopup && (
         <div className="form-popup">
           <Data close={closePopup} />
-        </div>
-      )}
-
-      {showAuthFormPopup && (
-        <div className="form-popup">
-          <AuthForm close={closeAuthPopup} />
         </div>
       )}
     </>

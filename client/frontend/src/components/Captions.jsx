@@ -11,11 +11,17 @@ import { ToastContainer, toast } from "react-toastify";
 function Captions() {
   const [showFormPopup, setShowFormPopup] = useState(false);
   const [captionId, setCaptionId] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const handleDelete = async (captionId, userId) => {
+  useEffect(() => {
+    const token = Cookies.get("token");
+    setIsAuthenticated(!!token);
+    fetchData();
+  }, []);
+
+  const handleDelete = async (captionId) => {
     try {
-      const storedUserId = Cookies.get("userId");
-      if (storedUserId == userId) {
+      if (isAuthenticated) {
         const response = await axios.delete(
           `https://coc-y497.onrender.com/api/delete/${captionId}`
         );
@@ -26,7 +32,7 @@ function Captions() {
           toast.error("Failed to delete caption");
         }
       } else {
-        toast.warning("You are not authorized to delete this caption");
+        toast.warning("You are not authenticated to delete this caption");
       }
     } catch (error) {
       console.error("Error deleting caption:", error);
@@ -44,10 +50,6 @@ function Captions() {
   };
 
   const [captions, setCaptions] = useState([]);
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   const fetchData = async () => {
     try {
@@ -100,7 +102,7 @@ function Captions() {
                 <div
                   className="delete-btn-area"
                   onClick={() =>
-                    handleDelete(caption.captionID, caption.userID)
+                    handleDelete(caption.captionID)
                   }
                 >
                   <img src={Delete} alt="" />
@@ -113,7 +115,7 @@ function Captions() {
       </div>
       {showFormPopup && (
         <div className="form-popup">
-          <Update captionId={captionId} close={closePopup} />
+          <Update captionId={captionId} isAuthenticated={isAuthenticated} close={closePopup} />
         </div>
       )}
     </>

@@ -1,53 +1,61 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Cookies from "js-cookie";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-function AuthForm(props) {
-
-  const [userId, setUserId] = useState("");
+function AuthForm({ setIsAuthenticated }) {
+  const [userID, setUserID] = useState("");
   const [username, setUsername] = useState("");
 
-  useEffect(() => {
-    const generatedUserId = generateRandomNumber();
-    setUserId(generatedUserId);
-  }, []);
-
-  const generateRandomNumber = () => {
-    return Math.floor(1000 + Math.random() * 100000);
-  };
-
-  const handleRegister = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
 
-    Cookies.set("userId", userId);
-    Cookies.set("username", username);
+    try {
+      const response = await axios.post("http://localhost:3000/api/login", {
+        userID,
+        username,
+      });
 
-    setUsername("");
+      if (response.status === 200 && response.data.token) {
+        Cookies.set("token", response.data.token, { expires: 24 });
+        toast.success("Login successful!");
+        setIsAuthenticated(true)
+      } else {
+        toast.error("An error occurred while logging in");
+      }
+    } catch (err) {
+      if (err.response && err.response.data && err.response.data.message) {
+        toast.error(err.response.data.message);
+      } else {
+        toast.error("An error occurred while logging in");
+      }
+    }
 
-    props.close();
-
-    window.location.reload();
   };
 
   return (
     <>
-      <form onSubmit={handleRegister}>
-        <h1>Register</h1>
+      <ToastContainer />
+      <form onSubmit={handleLogin}>
+        <h1>Login</h1>
         <div className="userID-generate">
           <label htmlFor="userID">User ID:</label>
           <input
             type="number"
-            value={userId}
+            value={userID}
             name="userID"
             id="userID"
-            disabled
+            placeholder="userID"
+            onChange={(event) => setUserID(event.target.value)}
           />
         </div>
         <div className="username-area">
           <label htmlFor="username">Username:</label>
           <input
             type="text"
-            name="userName"
-            id="userName"
+            name="username"
+            id="username"
             placeholder="Username"
             value={username}
             onChange={(event) => setUsername(event.target.value)}
@@ -55,10 +63,7 @@ function AuthForm(props) {
         </div>
         <div className="submit-btns">
           <div className="submit-btn">
-            <button type="submit">Register</button>
-          </div>
-          <div className="close-btn">
-            <button type="submit" onClick={props.close}>Close</button>
+            <button type="submit">Login</button>
           </div>
         </div>
       </form>
