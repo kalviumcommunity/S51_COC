@@ -201,6 +201,13 @@ nav{
     background-color: transparent;
 }
 
+.main-area-content-text{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
 .main-stream{
     display: flex;
     flex-direction: row;
